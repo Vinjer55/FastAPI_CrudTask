@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException
-from schemas.students import StudentCreateRequest, StudentCreateRequest, StudentResponse
+from src.schemas.students import StudentCreateRequest, StudentCreateRequest, StudentResponse
 
 user_router = APIRouter()
 
