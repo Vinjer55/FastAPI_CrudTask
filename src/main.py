@@ -1,7 +1,7 @@
 from typing import Annotated
-
+import uvicorn
 from fastapi import Depends, FastAPI, HTTPException
-from pydantic import BaseModel
+from .schemas.students import StudentCreateRequest, StudentCreateRequest, StudentResponse
 
 app = FastAPI()
 
@@ -10,22 +10,9 @@ current_roll_no = 1000
 
 # In memory database
 students_list = []
-
-class StudentBase(BaseModel):
-    email: str | None = None
-    is_active: bool = True
-    enrollment_date: str | None = None
-
-class StudentCreate(BaseModel):
-    name: str
-    age: int
-    grade: str |  None = None
-    
-class StudentResponse(StudentCreate):
-    roll_no: int
     
 @app.post("/students", response_model=StudentResponse)
-def create_student(student: StudentCreate):
+def create_student(student: StudentCreateRequest):
     global current_roll_no
     current_roll_no += 1
     
@@ -50,7 +37,7 @@ def get_student_by_roll_no(roll_no: int):
     raise HTTPException(status_code=404, detail="Item not found")
 
 @app.put("/students/{roll_no}", response_model=StudentResponse)
-def update_student(roll_no: int, student: StudentCreate):
+def update_student(roll_no: int, student: StudentCreateRequest):
     for i, s in enumerate(students_list):
         if s.roll_no == roll_no:
             updated_student = StudentResponse(
@@ -70,3 +57,9 @@ def delete_student(roll_no: int):
             students_list.pop(i)
             return {"message": "The student has been deleted"}
     raise HTTPException(status_code=404, detail="Item not found")
+
+if __name__ == "__main__":
+    uvicorn.run(
+        "main:app",
+        host="0.0.0.0",
+    )
