@@ -2,7 +2,7 @@ import uvicorn
 from fastapi import Depends, FastAPI
 
 from src import config
-from .api.users import student_router
+from .api.students import student_router
 
 app = FastAPI()
 

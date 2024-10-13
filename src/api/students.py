@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException
-from src.schemas.students import StudentCreateRequest, StudentCreateRequest, StudentResponse
+from schemas.student import StudentCreateRequest, StudentCreateRequest, StudentResponse
 
 student_router = APIRouter(
     tags=["Students"])
